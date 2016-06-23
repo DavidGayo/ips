@@ -1,0 +1,178 @@
+{% extends '::base.html.twig' %}
+{% block title %}.::Etiquetas::.!{% endblock %}
+{% block contenido -%}
+    <!DOCTYPE html>
+<!-- otro formulario 
+      en el formulario ya contiene los estilos-->
+                    <div class="col-lg-10"> <!-- tamaño de la seccion-->
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>Basic form <small>Simple login form example</small></h5>
+                        <div class="ibox-tools">
+                            <a class="collapse-link">
+                                <i class="fa fa-chevron-up"></i>
+                            </a>
+                            <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                                <i class="fa fa-wrench"></i>
+                            </a>
+                            <ul class="dropdown-menu dropdown-user">
+                                <li><a href="#">Config option 1</a>
+                                </li>
+                                <li><a href="#">Config option 2</a>
+                                </li>
+                            </ul>
+                            <a class="close-link">
+                                <i class="fa fa-times"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="ibox-content">
+                        <div class="row">
+                            <div class="col-sm-6 b-r"><h3 class="m-t-none m-b">Sign in</h3>
+                                <p>Sign in today for more expirience.</p>
+                                <form role="form">
+                                    <div class="form-group"><label>Email</label> <input type="email" placeholder="Enter email" class="form-control"></div>
+                                    <div class="form-group"><label>Password</label> <input type="password" placeholder="Password" class="form-control"></div>
+                                    <div>
+                                        <button class="btn btn-sm btn-primary pull-right m-t-n-xs" type="submit"><strong>Log in</strong></button>
+                                        <label> <div class="icheckbox_square-green" style="position: relative;"><input type="checkbox" class="i-checks" style="position: absolute; opacity: 0;"><ins class="iCheck-helper" style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; border: 0px; opacity: 0; background: rgb(255, 255, 255);"></ins></div> Remember me </label>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="col-sm-6"><h4>Not a member?</h4>
+                                <p>You can create an account:</p>
+                                <p class="text-center">
+                                    <a href=""><i class="fa fa-sign-in big-icon"></i></a>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div> 
+            <!-- otro formulario -->
+
+<script src="js/jquery.dataTables.js"></script>
+<script src="js/ZeroClipboard.js"></script>
+<script src="js/TableTools.js"></script>
+<script> 
+
+
+/* API method to get paging information */
+/* API method to get paging information */
+$.fn.dataTableExt.oApi.fnPagingInfo = function (oSettings) {
+    return {
+        "iStart": oSettings._iDisplayStart,
+        "iEnd": oSettings.fnDisplayEnd(),
+        "iLength": oSettings._iDisplayLength,
+        "iTotal": oSettings.fnRecordsTotal(),
+        "iFilteredTotal": oSettings.fnRecordsDisplay(),
+        "iPage": oSettings._iDisplayLength === -1 ?
+            0 : Math.ceil(oSettings._iDisplayStart / oSettings._iDisplayLength),
+        "iTotalPages": oSettings._iDisplayLength === -1 ?
+            0 : Math.ceil(oSettings.fnRecordsDisplay() / oSettings._iDisplayLength)
+    };
+};
+ 
+/* Bootstrap style full number pagination control */
+$.extend($.fn.dataTableExt.oPagination, {
+    "bootstrap_full_number": {
+        "fnInit": function (oSettings, nPaging, fnDraw) {
+            var oLang = oSettings.oLanguage.oPaginate;
+            var fnClickHandler = function (e) {
+                e.preventDefault();
+                if (oSettings.oApi._fnPageChange(oSettings, e.data.action)) {
+                    fnDraw(oSettings);
+                }
+            };
+ 
+            $(nPaging).append(
+                '<ul class="pagination">' +
+                '<li class="prev disabled"><a href="#" title="' + oLang.sFirst + '"><i class="fa fa-angle-double-left"></i></a></li>' +
+                '<li class="prev disabled"><a href="#" title="' + oLang.sPrevious + '"><i class="fa fa-angle-left"></i></a></li>' +
+                '<li class="next disabled"><a href="#" title="' + oLang.sNext + '"><i class="fa fa-angle-right"></i></a></li>' +
+                '<li class="next disabled"><a href="#" title="' + oLang.sLast + '"><i class="fa fa-angle-double-right"></i></a></li>' +
+                '</ul>'
+            );
+            var els = $('a', nPaging);
+            $(els[0]).bind('click.DT', {
+                action: "first"
+            }, fnClickHandler);
+            $(els[1]).bind('click.DT', {
+                action: "previous"
+            }, fnClickHandler);
+            $(els[2]).bind('click.DT', {
+                action: "next"
+            }, fnClickHandler);
+            $(els[3]).bind('click.DT', {
+                action: "last"
+            }, fnClickHandler);
+        },
+ 
+        "fnUpdate": function (oSettings, fnDraw) {
+            var iListLength = 5;
+            var iLen;
+            var oPaging = oSettings.oInstance.fnPagingInfo();
+            var an = oSettings.aanFeatures.p;
+            var i, j, sClass, iStart, iEnd, iHalf = Math.floor(iListLength / 2);
+ 
+            if (oPaging.iTotalPages < iListLength) {
+                iStart = 1;
+                iEnd = oPaging.iTotalPages;
+            } else if (oPaging.iPage <= iHalf) {
+                iStart = 1;
+                iEnd = iListLength;
+            } else if (oPaging.iPage >= (oPaging.iTotalPages - iHalf)) {
+                iStart = oPaging.iTotalPages - iListLength + 1;
+                iEnd = oPaging.iTotalPages;
+            } else {
+                iStart = oPaging.iPage - iHalf + 1;
+                iEnd = iStart + iListLength - 1;
+            }
+ 
+            for (i = 0, iLen = an.length; i < iLen; i++) {
+                if (oPaging.iTotalPages <= 0) {
+                    $('.pagination', an[i]).css('visibility', 'hidden');
+                } else {
+                    $('.pagination', an[i]).css('visibility', 'visible');
+                }
+ 
+                // Remove the middle elements
+                $('li:gt(1)', an[i]).filter(':not(.next)').remove();
+ 
+                // Add the new list items and their event handlers
+                for (j = iStart; j <= iEnd; j++) {
+                    <a href="//legacy.datatables.net/ref#sClass">sClass</a> = (j == oPaging.iPage + 1) ? 'class="active"' : '';
+                    $('<li ' + <a href="//legacy.datatables.net/ref#sClass">sClass</a> + '><a href="#">' + j + '</a></li>')
+                        .insertBefore($('li.next:first', an[i])[0])
+                        .bind('click', function (e) {
+                            e.preventDefault();
+                            oSettings._iDisplayStart = (parseInt($('a', this).text(), 10) - 1) * oPaging.iLength;
+                            fnDraw(oSettings);
+                        });
+                }
+ 
+                // Add / remove disabled classes from the static elements
+                if (oPaging.iPage === 0) {
+                    $('li.prev', an[i]).addClass('disabled');
+                } else {
+                    $('li.prev', an[i]).removeClass('disabled');
+                }
+ 
+                if (oPaging.iPage === oPaging.iTotalPages - 1 || oPaging.iTotalPages === 0) {
+                    $('li.next', an[i]).addClass('disabled');
+                } else {
+                    $('li.next', an[i]).removeClass('disabled');
+                }
+            }
+        }
+    }
+});
+
+
+</script> 
+
+<!-- -->
+
+
+                
+{% endblock %} 

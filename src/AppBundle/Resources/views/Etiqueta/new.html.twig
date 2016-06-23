@@ -8,9 +8,7 @@
                         <li>
                             <a href="index.html">Home</a>
                         </li>
-                        <li>
-                            <a>Agregar</a>
-                        </li>
+                       
                         <li class="active">
                             <strong>Mac</strong>
                         </li>
@@ -60,7 +58,8 @@
 	                    <div class="form-group">
 	                    	<label class="col-sm-2 control-label">MAC</label>
 	                            <div class="col-sm-10">
-	                            	<input type="text" name="txtMac">
+	                            	<input type="text" name="txtMac" style="text-transform:uppercase;" onkeyup="javascript:this.value=this.value.toUpperCase();"> 
+                                    <!-- direccion _MAC a mayusculas-->
 	                            	<span class="help-block m-b-none"></span>
 	                            </div>
 	                    </div>

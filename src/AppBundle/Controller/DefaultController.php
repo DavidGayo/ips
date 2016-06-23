@@ -30,7 +30,7 @@ class DefaultController extends Controller
 
         }
         return $this->render('default/index.html.twig', array(
-            'entities' => $todo,
+            'entities' => $datos, //cambio de la variable todo por datos
         ));
     }
 
@@ -155,7 +155,7 @@ class DefaultController extends Controller
         ->add('file')
         ->getForm();
         return $this->render('AppBundle:Etiqueta:index.html.twig', array(
-            'entities' => $todo,
+            'entities' => $datos,   //cambio de la variable todo por datos
             'form' => $form->createView(),
         ));
     }
@@ -389,5 +389,60 @@ header( "Content-disposition: filename=".$nombre.".csv"); */
             $response->headers->set('Content-Type', 'application/json');
             return $response;
     }
+
+    //codigo insertado
+    /**
+     * @Route("/pueba", name="prueba")
+     */
+    public function pruebaAction()
+    {
+    /*
+        $file = fopen("/etc/shorewall/maclist", "r") or exit("Unable to open file!");
+        //Output a line of the file until the end is reached
+        $i=0;
+        while(!feof($file))
+        {
+            if($i>9){
+                $datos=explode('  ', fgets($file));
+                $todo[]=$datos;
+            }else{
+                fgets($file);
+            }
+            $i++;
+           // echo fgets($file).'|'. $i."<br />";
+        }
+        fclose($file);
+       */
+        $archivo = '/etc/shorewall/maclist';
+        $abrir = fopen($archivo,'r+');
+        $contenido = fread($abrir,filesize($archivo));
+        fclose($abrir);
+         
+        // Separar linea por linea
+        $contenido = explode("\n",$contenido);
+        for($i=0;$i<count($contenido);$i++){
+            $datos=explode('  ', $contenido[$i]);
+            if(count($datos)>2){
+                $datos['id']=$i;
+                $todo[]=$datos;
+            }
+
+        }
+        $entity  = new File();
+        $form = $this->createFormBuilder($entity)
+        ->setAction($this->generateUrl('maclist_import'))
+        ->add('nombre', 'choice', array(
+            'choices'   => array('1' => 'Reemplazar todo', '2' => 'Al final del archivo', '3' => 'Al inicio del archivo')
+            
+        ))
+        ->add('file')
+        ->getForm();
+        return $this->render('AppBundle:Etiqueta:prueba.html.twig', array(
+            'entities' => $datos,   //cambio de la variable todo por datos
+            'form' => $form->createView(),
+        ));
+    }
+
+    //codigo insertado
 
 }

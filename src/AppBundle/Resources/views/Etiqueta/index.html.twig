@@ -26,9 +26,7 @@ box-shadow: inset 0px 0px 0px #16987e, 0px 5px 0px 0px #16987e, 0px 10px 5px #99
                         <li>
                             <a href="index.html">Home</a>
                         </li>
-                        <li>
-                            <a>Listado</a>
-                        </li>
+                        
                         <li class="active">
                             <strong>Macs</strong>
                         </li>
@@ -199,6 +197,8 @@ $.fn.dataTableExt.oApi.fnPagingInfo = function ( oSettings )
         "iTotalPages":    Math.ceil( oSettings.fnRecordsDisplay() / oSettings._iDisplayLength )
     };
 }
+
+<!-- -->
 $.extend( $.fn.dataTableExt.oPagination, {
     "bootstrap": {
         "fnInit": function( oSettings, nPaging, fnDraw ) {
@@ -211,10 +211,11 @@ $.extend( $.fn.dataTableExt.oPagination, {
             };
 
             $(nPaging).addClass('pagination').append(
-                '<ul>'+
-                    '<li class="prev disabled"><a href="#">&larr; '+oLang.sPrevious+'</a></li>'+
-                    '<li class="next disabled"><a href="#">'+oLang.sNext+' &rarr; </a></li>'+
+                '<ul>'+  //se agrego class="pagination"
+                '<li class="prev disabled"><a href="#">&larr; '+oLang.sPrevious+'</a></li>'+
+                '<li class="next disabled"><a href="#">'+oLang.sNext+' &rarr; </a></li>'+
                 '</ul>'
+
             );
             var els = $('a', nPaging);
             $(els[0]).bind( 'click.DT', { action: "previous" }, fnClickHandler );
@@ -225,7 +226,7 @@ $.extend( $.fn.dataTableExt.oPagination, {
             var iListLength = 5;
             var oPaging = oSettings.oInstance.fnPagingInfo();
             var an = oSettings.aanFeatures.p;
-            var i, j, sClass, iStart, iEnd, iHalf=Math.floor(iListLength/2);
+            var i, j, sClass, iStart, iEnd, iHalf=Math.floor(iListLength/2); //se agrego la var iLen
 
             if ( oPaging.iTotalPages < iListLength) {
                 iStart = 1;
@@ -281,6 +282,11 @@ $('.datatable').dataTable({
             "sLengthMenu": "_MENU_ records per page"
             }
         } );
+
+<!-- -->
+
+
+
 $( document ).ready(function() {
 $('#bodyPoliza').delegate('.form_transaccion_edit', 'click', function(event) {  
             event.preventDefault();
@@ -354,5 +360,7 @@ $('#bodyPoliza').delegate('.form_transaccion_delete', 'click', function(event) {
 function exportar(){
     $('#hrExport').click();
 }
+
+
 </script>
 {% endblock %}
